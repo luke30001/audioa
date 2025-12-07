@@ -4,20 +4,18 @@ Pre-fetches Whisper weights so the container is ready when the pod starts.
 
 import os
 
-import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor
+from huggingface_hub import snapshot_download
 
 MODEL_ID = os.environ.get("MODEL_ID", "openai/whisper-large-v3")
-torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
 
 def main():
-    AutoProcessor.from_pretrained(MODEL_ID)
-    AutoModelForSpeechSeq2Seq.from_pretrained(
-        MODEL_ID,
-        torch_dtype=torch_dtype,
-        low_cpu_mem_usage=True,
-        use_safetensors=True,
+    os.makedirs("/models", exist_ok=True)
+    # Download weights and processor files without loading the model into memory
+    # Uses standard HuggingFace cache structure so from_pretrained() can find it
+    snapshot_download(
+        repo_id=MODEL_ID,
+        cache_dir="/models",
     )
 
 
