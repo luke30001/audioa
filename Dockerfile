@@ -12,10 +12,10 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY runpod/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY runpod/handler.py runpod/download_model.py ./
+COPY handler.py download_model.py ./
 
 RUN python download_model.py
 
