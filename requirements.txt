@@ -1,8 +1,7 @@
 runpod==1.3.2
-torch==2.1.2
-torchaudio==2.1.2
-transformers==4.35.2
-accelerate==0.24.1
+# Use the GPU-enabled torch that ships with the base image; avoid reinstalling CPU wheels.
+transformers==4.46.3
+accelerate==0.26.1
 sentencepiece==0.1.99
 soundfile==0.12.1
 requests==2.31.0
