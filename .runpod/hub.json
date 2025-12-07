@@ -1,0 +1,53 @@
+{
+  "name": "Whisper Large V3 Transcription",
+  "description": "RunPod Serverless worker that transcribes audio with openai/whisper-large-v3.",
+  "image": "USERNAME/whisper-large-v3:latest",
+  "default_gpu": "NVIDIA A10G",
+  "min_gpu_memory": 16,
+  "container": {
+    "command": ["python", "-u", "handler.py"],
+    "ports": [],
+    "env": {
+      "MODEL_ID": "openai/whisper-large-v3"
+    }
+  },
+  "resources": {
+    "volumeMounts": [
+      {
+        "name": "models",
+        "mountPath": "/models"
+      }
+    ]
+  },
+  "inputs": {
+    "audio_url": {
+      "type": "string",
+      "description": "HTTP/HTTPS audio URL."
+    },
+    "audio_base64": {
+      "type": "string",
+      "description": "Base64 encoded audio bytes."
+    },
+    "audio_path": {
+      "type": "string",
+      "description": "Local audio path already in the container (debug/local use)."
+    },
+    "language": {
+      "type": "string",
+      "description": "Language hint (ISO code, e.g., en, it)."
+    },
+    "timestamps": {
+      "type": ["string", "boolean"],
+      "description": "false for none, true for chunk, \"word\" for per-word."
+    },
+    "chunk_length_s": {
+      "type": "number",
+      "description": "Sliding window length in seconds (default 30)."
+    },
+    "max_new_tokens": {
+      "type": "integer",
+      "description": "Generation token limit (default 448)."
+    }
+  },
+  "readme": "runpod/README.md"
+}
