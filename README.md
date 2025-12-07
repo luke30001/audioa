@@ -1,5 +1,7 @@
 # Whisper Large V3 RunPod Worker
 
+[![Deploy on RunPod](https://api.runpod.io/badge/luke30001/audioo)](https://console.runpod.io/hub/luke30001/audioo)
+
 Serverless worker that transcribes audio with `openai/whisper-large-v3` on GPU.
 
 ## Build & run locally
