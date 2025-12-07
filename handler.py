@@ -18,6 +18,7 @@ torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
 
 def _build_pipeline():
+    print(f"Loading model {MODEL_ID} on device: {device}")
     processor = AutoProcessor.from_pretrained(MODEL_ID)
     model = AutoModelForSpeechSeq2Seq.from_pretrained(
         MODEL_ID,
@@ -25,7 +26,10 @@ def _build_pipeline():
         low_cpu_mem_usage=True,
         use_safetensors=True,
     )
+    # Explicitly move model to GPU
+    model.to(device)
 
+    print("Model loaded successfully, creating pipeline...")
     return pipeline(
         task="automatic-speech-recognition",
         model=model,
@@ -132,4 +136,8 @@ def handler(event: Dict[str, Any]) -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
+    print("--- Whisper ASR Worker Ready ---")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"GPU: {torch.cuda.get_device_name(0)}")
     runpod.serverless.start({"handler": handler})
